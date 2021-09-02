@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: BK-Back
+  profiles:
+    active: native
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bkdb
+    username: admin
+    password: pass
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: "org.hibernate.dialect.PostgreSQLDialect"
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+server:
+  port: 8081
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: false
+
+auth:
+  google:
+    client_id: "512265054010-g3t0difpimrb59jr33dqld08gqkr7ijf.apps.googleusercontent.com"
+    client_secret: "Y0dnZIQ--M6uIz_Xafe7v1a9"
+  local:
+    token:
+      secret: asdf

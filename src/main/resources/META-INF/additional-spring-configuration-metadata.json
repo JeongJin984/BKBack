@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "auth.google.client_id",
+      "type": "java.lang.String",
+      "description": "Description for auth.google.client_id."
+    },
+    {
+      "name": "auth.google.client_secret",
+      "type": "java.lang.String",
+      "description": "Description for auth.google.client_secret."
+    },
+    {
+      "name": "auth.local.token.secret",
+      "type": "java.lang.String",
+      "description": "Description for auth.local.token.secret."
+    }
+  ]
+}
