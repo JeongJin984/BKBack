@@ -33,8 +33,8 @@ public class AuthorizeController {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("client_id", env.getProperty("auth.google.client_id"));
-        map.add("client_secret", env.getProperty("auth.google.client_id"));
+        map.add("client_id", (String) env.getProperty("auth.google.client_id"));
+        map.add("client_secret", (String) env.getProperty("auth.google.client_secret"));
         map.add("code", code);
         map.add("grant_type", "authorization_code");
         map.add("redirect_uri", "http://localhost:8081/auth");
