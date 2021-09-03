@@ -48,8 +48,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .anyRequest().permitAll()
-         .and()
+        .and()
                 .formLogin().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
                 .addFilterBefore(
                         localAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class
