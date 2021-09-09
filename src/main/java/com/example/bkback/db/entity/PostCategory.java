@@ -1,18 +1,29 @@
 package com.example.bkback.db.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
+@NoArgsConstructor
+@Getter
 public class PostCategory {
-    @Id @GeneratedValue
-    private Long id;
+    @Id @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID id;
     private String name;
 
+    public PostCategory(String name) {
+        this.name = name;
+    }
+
     @OneToMany(mappedBy = "category")
-    Set<Post> post = new HashSet<>();
+    List<Post> post = new LinkedList<>();
 }

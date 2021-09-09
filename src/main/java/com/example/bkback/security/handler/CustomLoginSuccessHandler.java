@@ -1,6 +1,7 @@
 package com.example.bkback.security.handler;
 
-import com.example.bkback.db.dto.UserDto;
+import com.example.bkback.db.dto.AccountDto;
+import com.example.bkback.db.repository.account.AccountRepository;
 import com.example.bkback.security.util.AccountContext;
 import com.example.bkback.security.util.jwt.TokenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,18 +22,20 @@ import java.io.IOException;
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private TokenUtils tokenUtils;
+    private AccountRepository accountRepository;
+
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    public CustomLoginSuccessHandler(TokenUtils tokenUtils) {
+    public CustomLoginSuccessHandler(TokenUtils tokenUtils, AccountRepository accountRepository) {
         this.tokenUtils = tokenUtils;
+        this.accountRepository = accountRepository;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        final UserDto user  = new UserDto();
-        user.setName(authentication.getName());
         final AccountContext context = new AccountContext((String)authentication.getPrincipal(), null, authentication.getAuthorities());
+        final AccountDto accountDto = accountRepository.findAccountByUsername(context.getUsername());
 
         final String accessToken = tokenUtils.generateJwtToken(context, 60 * 24 * 7);
         Cookie[] cookies = new Cookie[2];
@@ -55,6 +58,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         response.addCookie(cookies[0]);
         response.addCookie(cookies[1]);
-        response.getWriter().write(objectMapper.writeValueAsString(user));
+        response.getWriter().write(objectMapper.writeValueAsString(accountDto));
     }
 }

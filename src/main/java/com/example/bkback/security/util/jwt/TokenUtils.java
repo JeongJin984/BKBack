@@ -21,7 +21,7 @@ public class TokenUtils extends CreateTokenInfo {
     }
 
     public String generateJwtToken(AccountContext context, int minute) {
-        String secret = env.getProperty("token.secret");
+        String secret = env.getProperty("auth.local.token.secret");
         JwtBuilder builder = Jwts.builder()
                 .setSubject(context.getUsername())
                 .setHeader(createHeader())

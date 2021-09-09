@@ -1,5 +1,6 @@
 package com.example.bkback.security.util;
 
+import com.example.bkback.db.dto.AuthenticationDto;
 import com.example.bkback.db.entity.Account;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +15,7 @@ public class AccountContext implements UserDetails {
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public AccountContext(Account account, Collection<? extends GrantedAuthority> authorities) {
+    public AccountContext(AuthenticationDto account, Collection<? extends GrantedAuthority> authorities) {
         this.username = account.getUsername();
         this.password = account.getPassword();
         this.authorities = authorities;

@@ -1,6 +1,8 @@
 package com.example.bkback.security.service;
 
+import com.example.bkback.db.dto.AuthenticationDto;
 import com.example.bkback.db.entity.Account;
+import com.example.bkback.db.repository.account.AccountRepository;
 import com.example.bkback.security.util.AccountContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,18 +20,17 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
+    private final AccountRepository accountRepository;
+
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Account account = new Account();
-        account.setUsername(s);
-        String encoded = passwordEncoder.encode("asdf");
-        account.setPassword(encoded);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AuthenticationDto account = accountRepository.findAuthInfoByUsername(username);
 
-//        if(account == null) {
-//            throw new UsernameNotFoundException("No user found with username: " + s);
-//        }
+        if(account == null) {
+            throw new UsernameNotFoundException("No user found with username: " + username);
+        }
 
         Set<GrantedAuthority> userRoles = new HashSet<>();
 
