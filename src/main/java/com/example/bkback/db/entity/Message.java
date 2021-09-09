@@ -1,20 +1,30 @@
 package com.example.bkback.db.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@Getter
 public class Message {
-
-    @Id @GeneratedValue
-    private Long id;
-
+    @Id @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID id;
     private String content;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
     private Account account;
 
-
+    public Message(String content, Account account) {
+        this.content = content;
+        this.account = account;
+    }
 }

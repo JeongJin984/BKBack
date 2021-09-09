@@ -31,8 +31,8 @@ server:
 
 auth:
   google:
-    client_id: "512265054010-g3t0difpimrb59jr33dqld08gqkr7ijf.apps.googleusercontent.com"
-    client_secret: "Y0dnZIQ--M6uIz_Xafe7v1a9"
+    client_id: "512265054010-31avv85pu1ufi1jbrd9vu3s5kj1006pa.apps.googleusercontent.com"
+    client_secret: "DIybvRNaUF9muBoixFg_2zGP"
   local:
     token:
       secret: asdf

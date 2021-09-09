@@ -1,6 +1,6 @@
 package com.example.bkback.api;
 
-import com.example.bkback.api.util.GetCookie;
+import com.example.bkback.api.util.TokenData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.security.GeneralSecurityException;
 import java.util.Objects;
+
+import static org.springframework.util.StringUtils.hasText;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,8 +28,7 @@ public class AuthorizeController {
 
     private final Environment env;
 
-    @GetMapping(value = "/auth")
-    public String permit(@RequestParam String code, HttpServletResponse servletResponse) throws URISyntaxException {
+    private TokenData getToken(String code) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -47,32 +49,40 @@ public class AuthorizeController {
                             entity,
                             TokenData.class
                     );
+            return response.getBody();
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @GetMapping(value = "/auth")
+    public String permit(@RequestParam String code, HttpServletResponse servletResponse) throws URISyntaxException {
+        try {
+            TokenData tokenData = getToken(code);
             Cookie access_cookie = new Cookie(
                     "access_token",
-                    Objects.requireNonNull(response.getBody()).access_token
+                    tokenData.getAccess_token()
             );
             Cookie platform_name = new Cookie("platform", "google");
+
             access_cookie.setPath("/");
             platform_name.setPath("/");
+
             servletResponse.addCookie(access_cookie);
             servletResponse.addCookie(platform_name);
 
-        } catch (Exception e)  {
-            System.out.println("Error");
+            String refresh_token = tokenData.getRefresh_token();
+            if(refresh_token != null && refresh_token.length() > 3) {
+                Cookie refresh_cookie = new Cookie(
+                        "refresh_token",
+                        tokenData.getRefresh_token()
+                );
+                refresh_cookie.setPath("/");
+                servletResponse.addCookie(refresh_cookie);
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR");
         }
         return "redirect:http://localhost:3000/";
-    }
-
-    @Getter @Setter
-    static class Code {
-        String code;
-    }
-
-    @Getter @Setter
-    static class TokenData {
-        String access_token;
-        Integer expires_in;
-        String scope;
-        String token_type;
     }
 }
