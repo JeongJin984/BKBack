@@ -5,5 +5,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class PostlistRepositoryImpl implements PostlistRepositoryCustom{
+public class PostlistRepositoryImpl implements PostlistRepositoryCustom {
+
 }

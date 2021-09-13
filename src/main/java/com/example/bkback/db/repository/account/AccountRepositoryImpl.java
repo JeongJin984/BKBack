@@ -4,6 +4,7 @@ import com.example.bkback.db.dto.AccountDto;
 import com.example.bkback.db.dto.AuthenticationDto;
 import com.example.bkback.db.dto.ProfileDto;
 import com.example.bkback.db.entity.Account;
+import com.example.bkback.db.entity.QPostlist;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static com.example.bkback.db.entity.QAccount.account;
 import static com.example.bkback.db.entity.QPost.post;
+import static com.example.bkback.db.entity.QPostlist.postlist;
 
 @Repository
 @RequiredArgsConstructor
@@ -66,6 +68,7 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom {
                         account.profileImage
                 )
                 .from(account)
+                .distinct()
                 .where(account.username.eq(s))
                 .fetchOne();
 

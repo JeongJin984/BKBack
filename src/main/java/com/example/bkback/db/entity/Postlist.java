@@ -21,7 +21,7 @@ public class Postlist {
     String name;
 
     @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
-    Account owner;
+    private Account owner;
 
     public Postlist(String name, Account owner) {
         this.name = name;

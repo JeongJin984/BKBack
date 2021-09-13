@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Getter @Entity
 @NoArgsConstructor
@@ -33,20 +30,23 @@ public class Account {
     }
 
     @OneToMany(mappedBy = "account")
-    private Set<AccountClan> clanId = new HashSet<>();
+    private List<AccountClan> clanId = new ArrayList<>();
 
     @OneToMany(mappedBy = "writerAccount")
-    private Set<Post> writePost = new HashSet<>();
+    private List<Post> writePost = new ArrayList<>();
 
     @OneToMany(mappedBy = "likerAccount")
-    private Set<LikedPost> likePost = new HashSet<>();
+    private List<LikedPost> likePost = new ArrayList<>();
 
     @OneToMany(mappedBy = "accountA")
-    private Set<Intimacy> friender = new HashSet<>();
+    private List<Intimacy> friender = new ArrayList<>();
 
     @OneToMany(mappedBy = "accountB")
-    private Set<Intimacy> friendee = new HashSet<>();
+    private List<Intimacy> friendee = new ArrayList<>();
 
     @OneToMany(mappedBy = "likerAccount")
-    private Set<LikedComment> likedComment = new HashSet<>();
+    private List<LikedComment> likedComment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "owner")
+    private List<Postlist> postlist = new ArrayList<>();
 }

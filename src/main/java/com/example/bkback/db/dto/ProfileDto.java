@@ -15,11 +15,9 @@ public class ProfileDto {
 
     private List<SimplePostDto> writePostAsAccount;
     private List<SimplePostDto> writePostAsClan;
-
-    public ProfileDto(List<SimplePostDto> writePostAsAccount, List<SimplePostDto> writePostAsClan) {
-        this.writePostAsAccount = writePostAsAccount;
-        this.writePostAsClan = writePostAsClan;
-    }
+    private List<AccountDto> follower;
+    private List<AccountDto> followee;
+    private List<AccountDto> friend;
 
     public ProfileDto(UUID id, String username, Date birth, String profileImage) {
         this.id = id;

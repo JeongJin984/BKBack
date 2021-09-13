@@ -19,4 +19,11 @@ public class AccountDto {
         this.birth = birth;
         this.profileImage = profileImage;
     }
+
+    public AccountDto(Account account) {
+        this.id = account.getId();
+        this.username = account.getUsername();
+        this.birth = account.getBirth();
+        this.profileImage = account.getProfileImage();
+    }
 }
