@@ -8,6 +8,7 @@ import com.example.bkback.db.repository.Intimacy.IntimacyRepository;
 import com.example.bkback.db.repository.account.AccountRepository;
 import com.example.bkback.db.repository.follow.FollowRepository;
 import com.example.bkback.db.repository.post.PostRepository;
+import com.example.bkback.db.repository.postlist.PostlistRepository;
 import com.example.bkback.db.searchCondition.PostSearchCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class AccountService {
     private final PostRepository postRepository;
     private final FollowRepository followRepository;
     private final IntimacyRepository intimacyRepository;
+    private final PostlistRepository postlistRepository;
 
     public ProfileDto getProfileByUsername(String username) {
         ProfileDto profile = accountRepository.getProfile(username);
@@ -37,6 +39,8 @@ public class AccountService {
         profile.setFollower(followRepository.getFollowerByUsername(username));
 
         profile.setFriend(intimacyRepository.getFriendByUsername(username));
+
+        profile.setPostlist(postlistRepository.getPostlistByUsername(username));
 
         return profile;
     }

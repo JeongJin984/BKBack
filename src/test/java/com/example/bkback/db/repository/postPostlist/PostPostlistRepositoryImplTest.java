@@ -1,26 +1,27 @@
-package com.example.bkback.common.service;
+package com.example.bkback.db.repository.postPostlist;
 
-import com.example.bkback.db.dto.ProfileDto;
+import com.example.bkback.db.dto.SimplePostDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class AccountServiceTest {
+class PostPostlistRepositoryImplTest {
 
     @Autowired
-    private AccountService accountService;
+    PostPostlistRepository postlistRepository;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper();
 
     @Test
     void test() throws JsonProcessingException {
-        ProfileDto profile = accountService.getProfileByUsername("JJ NAM");
-        System.out.println(objectMapper.writeValueAsString(profile));
+        List<SimplePostDto> postlist1 = postlistRepository.getPostByPostlistTitle("postlist1");
+        System.out.println(mapper.writeValueAsString(postlist1));
     }
 }

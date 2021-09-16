@@ -1,26 +1,27 @@
-package com.example.bkback.common.service;
+package com.example.bkback.db.repository.postHashtag;
 
-import com.example.bkback.db.dto.ProfileDto;
+import com.example.bkback.db.dto.SimplePostDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class AccountServiceTest {
+class PostHashtagRepositoryImplTest {
 
     @Autowired
-    private AccountService accountService;
+    PostHashtagRepository postHashtagRepository;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper();
 
     @Test
     void test() throws JsonProcessingException {
-        ProfileDto profile = accountService.getProfileByUsername("JJ NAM");
-        System.out.println(objectMapper.writeValueAsString(profile));
+        List<SimplePostDto> test1 = postHashtagRepository.getPostByHashtag("test");
+        System.out.println(mapper.writeValueAsString(test1));
     }
 }

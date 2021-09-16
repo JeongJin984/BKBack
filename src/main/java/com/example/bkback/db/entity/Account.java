@@ -21,6 +21,7 @@ public class Account {
     private String password;
     private Date birth;
     private String profileImage;
+    private Integer activityScore;
 
     public Account(String username, String password, Date birth, String profileImage) {
         this.username = username;

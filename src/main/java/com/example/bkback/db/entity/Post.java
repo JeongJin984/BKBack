@@ -49,8 +49,11 @@ public class Post {
     }
 
     @OneToMany(mappedBy = "likedPost")
-    private Set<LikedPost> likerAccount = new HashSet<>();
+    private List<LikedPost> likerAccount = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
-    private Set<Comment> comment = new LinkedHashSet<>();
+    private List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostHashtag> hashtag = new ArrayList<>();
 }

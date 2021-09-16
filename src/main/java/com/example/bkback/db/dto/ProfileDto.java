@@ -18,6 +18,7 @@ public class ProfileDto {
     private List<AccountDto> follower;
     private List<AccountDto> followee;
     private List<AccountDto> friend;
+    private List<SimplePostlistDto> postlist;
 
     public ProfileDto(UUID id, String username, Date birth, String profileImage) {
         this.id = id;

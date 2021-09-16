@@ -70,6 +70,14 @@ public class SimpleListener implements ApplicationListener<ApplicationStartedEve
 
         em.persist(category);
 
+        Hashtag hashtag1 = new Hashtag("test");
+        Hashtag hashtag2 = new Hashtag("test2");
+        Hashtag hashtag3 = new Hashtag("test3");
+
+        em.persist(hashtag1);
+        em.persist(hashtag2);
+        em.persist(hashtag3);
+
         Post post1 = new Post("postImage1", "title1", "content1", 1L,account1, category, null);
         Post post2 = new Post("postImage2", "title1", "content2", 2L,null, category, clan1);
 
@@ -87,6 +95,18 @@ public class SimpleListener implements ApplicationListener<ApplicationStartedEve
         em.persist(comment2);
         em.persist(comment3);
         em.persist(comment4);
+
+        PostHashtag postHashtag1 = new PostHashtag(hashtag1, post1);
+        PostHashtag postHashtag2 = new PostHashtag(hashtag2, post1);
+        PostHashtag postHashtag3 = new PostHashtag(hashtag3, post1);
+        PostHashtag postHashtag4 = new PostHashtag(hashtag1, post2);
+        PostHashtag postHashtag5 = new PostHashtag(hashtag3, post2);
+
+        em.persist(postHashtag1);
+        em.persist(postHashtag2);
+        em.persist(postHashtag3);
+        em.persist(postHashtag4);
+        em.persist(postHashtag5);
 
         Follow follow1 = new Follow(account2, account2.getUsername(), account1, account1.getUsername());
         Follow follow2 = new Follow(account1, account1.getUsername(), account2, account2.getUsername());
