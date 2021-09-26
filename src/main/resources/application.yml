@@ -5,8 +5,8 @@ spring:
     active: native
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/test
-    username: bkadmin
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: admin
     password: pass
 
   jpa:

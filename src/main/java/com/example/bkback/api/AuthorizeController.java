@@ -1,6 +1,7 @@
 package com.example.bkback.api;
 
 import com.example.bkback.api.util.TokenData;
+import com.example.bkback.db.repository.account.AccountRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ import static org.springframework.util.StringUtils.hasText;
 public class AuthorizeController {
 
     private final Environment env;
+    private final AccountRepository accountRepository;
 
     private TokenData getToken(String code) {
         RestTemplate restTemplate = new RestTemplate();
@@ -83,6 +85,7 @@ public class AuthorizeController {
         } catch (Exception e) {
             System.out.println("ERROR");
         }
+
         return "redirect:http://localhost:3000/";
     }
 }

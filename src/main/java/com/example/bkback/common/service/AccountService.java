@@ -1,7 +1,9 @@
 package com.example.bkback.common.service;
 
+import com.example.bkback.db.dto.AccountDto;
 import com.example.bkback.db.dto.ProfileDto;
 import com.example.bkback.db.entity.Account;
+import com.example.bkback.db.entity.Follow;
 import com.example.bkback.db.entity.Post;
 import com.example.bkback.db.entity.Postlist;
 import com.example.bkback.db.repository.Intimacy.IntimacyRepository;
@@ -44,4 +46,19 @@ public class AccountService {
 
         return profile;
     }
+
+    public void followAccount(Long follower, Long followee) {
+        Account followerAccount = accountRepository.findById(follower);
+        Account followeeAccount = accountRepository.findById(followee);
+        followRepository.save(
+                new Follow(
+                        followerAccount,
+                        followerAccount.getUsername(),
+                        followeeAccount,
+                        followeeAccount.getUsername()
+                )
+        );
+    }
+
+
 }

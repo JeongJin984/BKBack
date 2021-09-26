@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -27,6 +28,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
 
+import static org.springframework.util.StringUtils.hasText;
+
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -36,10 +39,10 @@ public class UserController {
     private final AccountRepository accountRepository;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody SignUpVO body) {
+    @ResponseBody
+    public void signup(@RequestBody SignUpVO body) {
         Account account = new Account(body.username, passwordEncoder.encode(body.password), body.getBirth(),body.getProfileImage());
         accountRepository.saveAndFlush(account);
-        return "redirect:http://localhost:3000/login";
     }
 
     @GetMapping(value = "/user")
@@ -48,8 +51,11 @@ public class UserController {
         String access_token = GetCookie.get(request, "access_token");
         String platform = GetCookie.get(request, "platform");
 
+        if(!(hasText(access_token) && hasText(platform))) {
+            return null;
+        }
+
         String username = "";
-        assert platform != null;
         if(platform.equals("google")) {
             try {
                 GoogleProfile googleProfile = getGoogleProfile(access_token);
@@ -76,6 +82,7 @@ public class UserController {
                 System.out.println(e.getMessage());
             }
         }
+
         return accountRepository.findAccountByUsername(username);
     }
 
@@ -107,6 +114,7 @@ public class UserController {
 
     private GoogleProfile getGoogleProfile(String access_token) {
         RestTemplate restTemplate = new RestTemplate();
+
         HttpHeaders headers = new HttpHeaders();
         assert access_token != null;
         headers.setBearerAuth(access_token);
