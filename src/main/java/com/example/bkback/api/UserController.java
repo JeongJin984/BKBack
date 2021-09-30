@@ -2,7 +2,9 @@ package com.example.bkback.api;
 
 import com.example.bkback.api.util.GetCookie;
 import com.example.bkback.api.util.TokenData;
+import com.example.bkback.common.service.AccountService;
 import com.example.bkback.db.dto.AccountDto;
+import com.example.bkback.db.dto.ProfileDto;
 import com.example.bkback.db.entity.Account;
 import com.example.bkback.db.repository.account.AccountRepository;
 import com.example.bkback.security.util.jwt.GetTokenInfo;
@@ -37,6 +39,7 @@ public class UserController {
     private final Environment env;
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     @PostMapping("/signup")
     @ResponseBody
@@ -85,6 +88,13 @@ public class UserController {
 
         return accountRepository.findAccountByUsername(username);
     }
+
+    @GetMapping("/profile")
+    @ResponseBody
+    public ProfileDto getProfile(@RequestParam String username) {
+        return accountService.getProfileByUsername(username);
+    }
+
 
     private TokenData refreshToken(String refresh_token) {
         RestTemplate restTemplate = new RestTemplate();

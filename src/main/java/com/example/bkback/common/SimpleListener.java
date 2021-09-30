@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @NoArgsConstructor
-//@Component
+@Component
 public class SimpleListener implements ApplicationListener<ApplicationStartedEvent> {
 
     private EntityManagerFactory entityManagerFactory;
@@ -42,9 +42,9 @@ public class SimpleListener implements ApplicationListener<ApplicationStartedEve
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
 
-        Account account1 = new Account("JJ NAM", passwordEncoder.encode("pass"), new Date(), "profileImage1");
-        Account account2 = new Account("test2", passwordEncoder.encode("pass"), new Date(), "profileImage2");
-        Account account3 = new Account("test3", passwordEncoder.encode("pass"), new Date(), "profileImage3");
+        Account account1 = new Account("JJ NAM", passwordEncoder.encode("pass"), new Date(), "paka.png");
+        Account account2 = new Account("test2", passwordEncoder.encode("pass"), new Date(), "paka.png");
+        Account account3 = new Account("test3", passwordEncoder.encode("pass"), new Date(), "paka.png");
 
         em.persist(account1);
         em.persist(account2);
@@ -78,19 +78,19 @@ public class SimpleListener implements ApplicationListener<ApplicationStartedEve
         em.persist(hashtag2);
         em.persist(hashtag3);
 
-        Post post1 = new Post("postImage1", "title1", "content1", 1L,account1, category, null);
-        Post post2 = new Post("postImage2", "title1", "content2", 2L,null, category, clan1);
+        Post post1 = new Post("postImage1", "paka.png", "content1", 1L,account1, category, null);
+        Post post2 = new Post("postImage2", "paka.png", "content2", 2L,null, category, clan1);
 
         em.persist(post1);
         em.persist(post2);
 
-        Comment comment1 = new Comment(account1.getUsername(), "comment1", null, 3L, post1, account1);
-        Comment comment4 = new Comment(account3.getUsername(), "comment4", null, 4L, post1, account3);
+        Comment comment1 = new Comment("paka.png", account1.getUsername(), "comment1", null, 3L, post1, account1);
+        Comment comment4 = new Comment("paka.png", account3.getUsername(), "comment4", null, 4L, post1, account3);
 
         em.persist(comment1);
 
-        Comment comment2 = new Comment(account2.getUsername(), "comment2", comment1.getId(), 1L, post1, account2);
-        Comment comment3 = new Comment(account1.getUsername(), "comment3", comment1.getId(), 2L, post1, account1);
+        Comment comment2 = new Comment("paka.png", account2.getUsername(), "comment2", comment1.getId(), 1L, post1, account2);
+        Comment comment3 = new Comment("paka.png", account1.getUsername(), "comment3", comment1.getId(), 2L, post1, account1);
 
         em.persist(comment2);
         em.persist(comment3);

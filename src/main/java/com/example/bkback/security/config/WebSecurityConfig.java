@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             HttpServletRequest request,
                             HttpServletResponse response,
                             Authentication authentication) throws IOException, ServletException {
-                        response.sendRedirect("/login");
+                        System.out.println("SUCCESS!!");
                     }
                 });
     }

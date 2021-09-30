@@ -28,7 +28,7 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom {
     @Override
     public AuthenticationDto findAuthInfoByUsername(String s) {
         Tuple tuple = queryFactory
-                .select(Projections.constructor(AuthenticationDto.class),
+                .select(
                         account.username,
                         account.password
                 )
