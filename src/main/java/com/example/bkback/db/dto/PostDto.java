@@ -2,16 +2,14 @@ package com.example.bkback.db.dto;
 
 import com.example.bkback.db.entity.Account;
 import com.example.bkback.db.entity.Comment;
+import com.example.bkback.db.entity.LikedPost;
 import com.example.bkback.db.entity.Post;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 public class PostDto {
@@ -23,6 +21,7 @@ public class PostDto {
     private WriterDto writerAccount;
     private ClanDto writerClan;
     private List<CommentDto> comment = new ArrayList<>();
+    private Set<LikedAccountDto> likerAccount = new HashSet<>();
     private String category;
 
     public PostDto(Post post) {
@@ -34,22 +33,31 @@ public class PostDto {
                 post.getWriterAccount() == null ? null : new WriterDto(post.getWriterAccount());
         this.writerClan =
                 post.getWriterClan() == null ? null : new ClanDto(post.getWriterClan());
-        this.category = post.getCategory().getName();
-
-        for(Comment c : post.getComment()) {
-            comment.add(new CommentDto(c));
+        if(post.getCategory() != null) this.category = post.getCategory().getName();
+        for(LikedPost v : post.getLikerAccount()) {
+            likerAccount.add(new LikedAccountDto(v.getLikerAccount().getId()));
         }
     }
 
     @Data
     static class WriterDto {
-
         private UUID id;
         private String username;
+        private String profileImage;
 
         public WriterDto(Account account) {
             this.id = account.getId();
             this.username = account.getUsername();
+            this.profileImage = account.getProfileImage();
+        }
+    }
+
+    @Data
+    static class LikedAccountDto {
+        private UUID id;
+
+        public LikedAccountDto(UUID id) {
+            this.id = id;
         }
     }
 }

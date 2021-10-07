@@ -13,7 +13,7 @@ public class BkBackApplication {
 
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication();
-        application.addListeners(new SimpleListener());
+        //application.addListeners(new SimpleListener());
         application.run(BkBackApplication.class, args);
     }
 

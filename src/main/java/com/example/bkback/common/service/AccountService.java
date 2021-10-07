@@ -47,18 +47,4 @@ public class AccountService {
         return profile;
     }
 
-    public void followAccount(Long follower, Long followee) {
-        Account followerAccount = accountRepository.findById(follower);
-        Account followeeAccount = accountRepository.findById(followee);
-        followRepository.save(
-                new Follow(
-                        followerAccount,
-                        followerAccount.getUsername(),
-                        followeeAccount,
-                        followeeAccount.getUsername()
-                )
-        );
-    }
-
-
 }

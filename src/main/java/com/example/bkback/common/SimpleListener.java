@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @NoArgsConstructor
-@Component
+//@Component
 public class SimpleListener implements ApplicationListener<ApplicationStartedEvent> {
 
     private EntityManagerFactory entityManagerFactory;
@@ -84,13 +84,13 @@ public class SimpleListener implements ApplicationListener<ApplicationStartedEve
         em.persist(post1);
         em.persist(post2);
 
-        Comment comment1 = new Comment("paka.png", account1.getUsername(), "comment1", null, 3L, post1, account1);
-        Comment comment4 = new Comment("paka.png", account3.getUsername(), "comment4", null, 4L, post1, account3);
+        Comment comment1 = new Comment("paka.png", account1.getUsername(), "comment1", null, 3L, post1, account1, false);
+        Comment comment4 = new Comment("paka.png", account3.getUsername(), "comment4", null, 4L, post1, account3, false);
 
         em.persist(comment1);
 
-        Comment comment2 = new Comment("paka.png", account2.getUsername(), "comment2", comment1.getId(), 1L, post1, account2);
-        Comment comment3 = new Comment("paka.png", account1.getUsername(), "comment3", comment1.getId(), 2L, post1, account1);
+        Comment comment2 = new Comment("paka.png", account2.getUsername(), "comment2", comment1, 1L, post1, account2, true);
+        Comment comment3 = new Comment("paka.png", account1.getUsername(), "comment3", comment1, 2L, post1, account1, true);
 
         em.persist(comment2);
         em.persist(comment3);

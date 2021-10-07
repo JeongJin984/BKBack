@@ -49,7 +49,7 @@ public class Post {
     }
 
     @OneToMany(mappedBy = "likedPost")
-    private List<LikedPost> likerAccount = new ArrayList<>();
+    private Set<LikedPost> likerAccount = new HashSet<>();
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comment = new ArrayList<>();

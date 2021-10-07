@@ -25,7 +25,7 @@ public class Comment {
     private String writerName;
     private String content;
     private Long likerNumber;
-    private UUID parentCommentId;
+    private Boolean isReply;
 
     @CreatedDate
     private Date createdAt;
@@ -36,17 +36,24 @@ public class Comment {
     @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
     private Account writerAccount;
 
-    public Comment(String writerProfileImage , String writerName, String content, UUID parentCommentId, Long likerNumber, Post post, Account writerAccount) {
+    @ManyToOne(targetEntity = Comment.class, fetch = FetchType.LAZY)
+    private Comment parentComment;
+
+    public Comment(String writerProfileImage , String writerName, String content, Comment parentComment, Long likerNumber, Post post, Account writerAccount, boolean isReply) {
         this.writerProfileImage = writerProfileImage;
         this.writerName = writerName;
         this.content = content;
-        this.parentCommentId = parentCommentId;
+        this.parentComment = parentComment;
         this.likerNumber = likerNumber;
         this.post = post;
         this.writerAccount = writerAccount;
+        this.isReply = isReply;
     }
 
     @OneToMany(mappedBy = "comment")
     private Set<LikedComment> likerAccount = new HashSet<>();
+
+    @OneToMany(mappedBy = "parentComment")
+    private List<Comment> replyComment = new ArrayList<>();
 }
 

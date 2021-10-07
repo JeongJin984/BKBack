@@ -5,7 +5,7 @@ import com.example.bkback.db.dto.SimplePostDto;
 import com.example.bkback.db.entity.*;
 
 import com.example.bkback.db.searchCondition.PostSearchCondition;
-import com.querydsl.core.types.Projections;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.example.bkback.db.entity.QAccount.account;
 import static com.example.bkback.db.entity.QClan.clan;
-import static com.example.bkback.db.entity.QComment.comment;
 import static com.example.bkback.db.entity.QLikedPost.likedPost1;
 import static com.example.bkback.db.entity.QPost.post;
 import static com.example.bkback.db.entity.QPostCategory.postCategory;
@@ -33,7 +33,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .selectFrom(post)
                 .leftJoin(post.category(), postCategory).fetchJoin()
                 .leftJoin(post.likerAccount, likedPost1).fetchJoin()
-                .leftJoin(post.comment, comment).fetchJoin()
                 .leftJoin(post.writerClan(), clan).fetchJoin()
                 .leftJoin(post.writerAccount(), account).fetchJoin()
                 .distinct()
@@ -46,8 +45,21 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         for(Post p : posts) {
             postDtos.add(new PostDto(p));
         }
-
         return postDtos;
+    }
+
+    @Override
+    public PostDto getPostByID(UUID id) {
+        Post fetch = queryFactory
+                .selectFrom(QPost.post)
+                .leftJoin(QPost.post.category(), postCategory).fetchJoin()
+                .leftJoin(QPost.post.likerAccount, likedPost1).fetchJoin()
+                .leftJoin(QPost.post.writerClan(), clan).fetchJoin()
+                .leftJoin(QPost.post.writerAccount(), account).fetchJoin()
+                .distinct()
+                .where(QPost.post.id.eq(id))
+                .fetchFirst();
+        return new PostDto(fetch);
     }
 
     @Override
@@ -74,6 +86,18 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
             ));
         }
         return result;
+    }
+
+    @Override
+    public Post findByUUID(String postId) {
+        return queryFactory
+                .selectFrom(post)
+                .where(post.id.eq(UUID.fromString(postId)))
+                .fetchFirst();
+    }
+
+    @Override
+    public void likePost(UUID postId) {
     }
 
     BooleanExpression postCategoryNameEq(String categoryName) {

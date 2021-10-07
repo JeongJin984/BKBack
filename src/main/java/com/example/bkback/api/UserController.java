@@ -22,11 +22,17 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -43,8 +49,17 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseBody
-    public void signup(@RequestBody SignUpVO body) {
-        Account account = new Account(body.username, passwordEncoder.encode(body.password), body.getBirth(),body.getProfileImage());
+    public void signup(
+            @RequestParam("username") String username,
+            @RequestParam String password,
+            @RequestParam String birth,
+            @RequestParam MultipartFile profile
+            ) throws IOException, ParseException {
+        String new_file_name = Long.toString(System.nanoTime()) + ".jpg";
+        Path path = Paths.get(System.getProperty("catalina.base") + new_file_name);
+        Files.write(path, profile.getBytes());
+
+        Account account = new Account(username, passwordEncoder.encode(password), new SimpleDateFormat("yyyy-MM-dd").parse(birth), new_file_name);
         accountRepository.saveAndFlush(account);
     }
 

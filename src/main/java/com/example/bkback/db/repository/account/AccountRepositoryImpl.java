@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static com.example.bkback.db.entity.QAccount.account;
 import static com.example.bkback.db.entity.QPost.post;
@@ -79,5 +80,13 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom {
                 tuple.get(account.profileImage)
         );
 
+    }
+
+    @Override
+    public Account findByUUID(String id) {
+        return queryFactory
+                .selectFrom(account)
+                .where(account.id.eq(UUID.fromString(id)))
+                .fetchFirst();
     }
 }

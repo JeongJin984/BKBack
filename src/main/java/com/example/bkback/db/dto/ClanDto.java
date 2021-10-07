@@ -10,17 +10,19 @@ public class ClanDto {
 
     private UUID id;
     private String name;
-    private String master;
+    private String username;
+    private String profileImage;
 
     public ClanDto(UUID id, String name, String master) {
         this.id = id;
         this.name = name;
-        this.master = master;
+        this.username = master;
     }
 
     public ClanDto(Clan clan) {
         this.id = clan.getId();
         this.name = clan.getName();
-        this.master = clan.getMaster();
+        this.username = clan.getMaster();
+        this.profileImage = "paka.png";
     }
 }
