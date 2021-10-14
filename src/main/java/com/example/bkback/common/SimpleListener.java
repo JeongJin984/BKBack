@@ -42,9 +42,9 @@ public class SimpleListener implements ApplicationListener<ApplicationStartedEve
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
 
-        Account account1 = new Account("JJ NAM", passwordEncoder.encode("pass"), new Date(), "paka.png");
-        Account account2 = new Account("test2", passwordEncoder.encode("pass"), new Date(), "paka.png");
-        Account account3 = new Account("test3", passwordEncoder.encode("pass"), new Date(), "paka.png");
+        Account account1 = new Account("JJ NAM", passwordEncoder.encode("pass"), null,new Date(), "paka.png");
+        Account account2 = new Account("test2", passwordEncoder.encode("pass"), null,new Date(), "paka.png");
+        Account account3 = new Account("test3", passwordEncoder.encode("pass"), null,new Date(), "paka.png");
 
         em.persist(account1);
         em.persist(account2);

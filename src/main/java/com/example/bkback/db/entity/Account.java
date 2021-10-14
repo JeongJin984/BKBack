@@ -19,13 +19,15 @@ public class Account {
     private UUID id;
     private String username;
     private String password;
+    private String email;
     private Date birth;
     private String profileImage;
     private Integer activityScore;
 
-    public Account(String username, String password, Date birth, String profileImage) {
+    public Account(String username, String password, String email, Date birth, String profileImage) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.birth = birth;
         this.profileImage = profileImage;
     }

@@ -21,6 +21,7 @@ import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.Objects;
 
+import static com.example.bkback.api.UserController.getGoogleProfile;
 import static org.springframework.util.StringUtils.hasText;
 
 @Controller
@@ -59,11 +60,13 @@ public class AuthorizeController {
 
     @GetMapping(value = "/auth")
     public String permit(@RequestParam String code, HttpServletResponse servletResponse) throws URISyntaxException {
+        String access_token = "";
         try {
             TokenData tokenData = getToken(code);
+            access_token =  tokenData.getAccess_token();
             Cookie access_cookie = new Cookie(
                     "access_token",
-                    tokenData.getAccess_token()
+                    access_token
             );
             Cookie platform_name = new Cookie("platform", "google");
 
@@ -86,6 +89,12 @@ public class AuthorizeController {
             System.out.println("ERROR");
         }
 
-        return "redirect:http://localhost:3000/";
+        UserController.GoogleProfile googleProfile = getGoogleProfile(access_token);
+
+        if(accountRepository.findAccountByUsername(googleProfile.name) == null) {
+            return "redirect:http://localhost:3000/signup?google=" + googleProfile.name;
+        } else {
+            return "redirect:http://localhost:3000/";
+        }
     }
 }

@@ -21,6 +21,19 @@ spring:
           lob:
             non_contextual_creation: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "philipwq3963@gmail.com"
+    password: "wjdwls3252!!@"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
 server:
   port: 8081
   servlet:

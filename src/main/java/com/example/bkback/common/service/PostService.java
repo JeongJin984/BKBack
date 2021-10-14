@@ -31,6 +31,9 @@ public class PostService {
     public List<PostDto> getAllPost() {
         PostSearchCondition condition = new PostSearchCondition();
         List<PostDto> allPost = postRepository.getAllPost(condition);
+        for(PostDto p : allPost) {
+            p.setComment(commentRepository.getCommentByPostId(p.getId()));
+        }
         return allPost;
     }
 
@@ -65,5 +68,13 @@ public class PostService {
     @Transactional
     public void unlikePost(String userId, String postId) {
         likedPostRepository.deleteById(postId, userId);
+    }
+
+    @Transactional
+    public CommentDto addComment(String userId, String postId, String content) {
+        Account account = accountRepository.findByUUID(userId);
+        Post post = postRepository.findByUUID(postId);
+        Comment comment = commentRepository.saveAndFlush(new Comment(account.getProfileImage(), account.getUsername(), content, null, 0L, post, account, false));
+        return new CommentDto(comment);
     }
 }

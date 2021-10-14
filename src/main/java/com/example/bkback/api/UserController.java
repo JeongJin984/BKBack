@@ -1,5 +1,6 @@
 package com.example.bkback.api;
 
+import com.example.bkback.api.util.EmailUtil;
 import com.example.bkback.api.util.GetCookie;
 import com.example.bkback.api.util.TokenData;
 import com.example.bkback.common.service.AccountService;
@@ -8,6 +9,7 @@ import com.example.bkback.db.dto.ProfileDto;
 import com.example.bkback.db.entity.Account;
 import com.example.bkback.db.repository.account.AccountRepository;
 import com.example.bkback.security.util.jwt.GetTokenInfo;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -47,11 +49,14 @@ public class UserController {
     private final AccountRepository accountRepository;
     private final AccountService accountService;
 
+    private final EmailUtil emailUtil;
+
     @PostMapping("/signup")
     @ResponseBody
     public void signup(
             @RequestParam("username") String username,
             @RequestParam String password,
+            @RequestParam String email,
             @RequestParam String birth,
             @RequestParam MultipartFile profile
             ) throws IOException, ParseException {
@@ -59,7 +64,7 @@ public class UserController {
         Path path = Paths.get(System.getProperty("catalina.base") + new_file_name);
         Files.write(path, profile.getBytes());
 
-        Account account = new Account(username, passwordEncoder.encode(password), new SimpleDateFormat("yyyy-MM-dd").parse(birth), new_file_name);
+        Account account = new Account(username, passwordEncoder.encode(password), email, new SimpleDateFormat("yyyy-MM-dd").parse(birth), new_file_name);
         accountRepository.saveAndFlush(account);
     }
 
@@ -110,6 +115,14 @@ public class UserController {
         return accountService.getProfileByUsername(username);
     }
 
+    @PostMapping("/email")
+    @ResponseBody
+    public String authEmail(@RequestBody Email data) {
+        String email = data.getEmail();
+        int random = (int)(Math.random() * 10000);
+        emailUtil.sendEmail(email, "Peniyo 인증메일 입니다.", Integer.toString(random));
+        return Integer.toString(random);
+    }
 
     private TokenData refreshToken(String refresh_token) {
         RestTemplate restTemplate = new RestTemplate();
@@ -137,7 +150,7 @@ public class UserController {
         }
     }
 
-    private GoogleProfile getGoogleProfile(String access_token) {
+    public static GoogleProfile getGoogleProfile(String access_token) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -169,5 +182,10 @@ public class UserController {
         private String password;
         private Date birth;
         private String profileImage;
+    }
+
+    @Data
+    static class Email {
+        private String email;
     }
 }

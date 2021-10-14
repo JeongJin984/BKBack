@@ -1,6 +1,7 @@
 package com.example.bkback.api;
 
 import com.example.bkback.common.service.PostService;
+import com.example.bkback.db.dto.CommentDto;
 import com.example.bkback.db.dto.PostDto;
 import com.example.bkback.db.entity.Account;
 import lombok.Data;
@@ -61,9 +62,22 @@ public class PostsController {
         postService.unlikePost(likePost.userId, likePost.postId);
     }
 
+    @PostMapping("/post/comment")
+    @ResponseBody
+    public CommentDto addComment(@RequestBody CommentPostVO data) {
+        return postService.addComment(data.userId, data.postId, data.content);
+    }
+
     @Data
     static class LikePostVO {
         String userId;
         String postId;
+    }
+
+    @Data
+    static class CommentPostVO {
+        String userId;
+        String postId;
+        String content;
     }
 }

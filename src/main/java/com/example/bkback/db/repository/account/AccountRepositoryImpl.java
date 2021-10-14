@@ -51,6 +51,11 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom {
                 .from(account)
                 .where(account.username.eq(s))
                 .fetchOne();
+
+        if(tuple == null) {
+            return null;
+        }
+
         return new AccountDto(
                 tuple.get(account.id),
                 tuple.get(account.username),
